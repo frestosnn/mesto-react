@@ -12,7 +12,7 @@ function App() {
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
 
-  const [selectedCard, setSelectedCard] = useState('');
+  const [selectedCard, setSelectedCard] = useState({ name: '', link: '' });
 
   const handleEditAvatarClick = () => {
     setEditAvatarPopupOpen(state => !state);
@@ -30,7 +30,7 @@ function App() {
     setEditAvatarPopupOpen(false);
     setEditProfilePopupOpen(false);
     setAddPlacePopupOpen(false);
-    setSelectedCard('');
+    setSelectedCard({ name: '', link: '' });
   };
 
   return (
@@ -44,6 +44,7 @@ function App() {
       />
 
       <PopupWithForm
+        buttonText="Сохранить"
         title="Редактировать профиль"
         name="add_edit"
         isOpen={isEditProfilePopupOpen}
@@ -71,13 +72,10 @@ function App() {
           maxLength="200"
         />
         <span className="user-job-input-error popup__error"></span>
-
-        <button className="popup__button-save popup__button-save_update_user-info" type="submit">
-          Сохранить
-        </button>
       </PopupWithForm>
 
       <PopupWithForm
+        buttonText="Создать"
         title="Новое место"
         name="add_photo"
         isOpen={isAddPlacePopupOpen}
@@ -103,13 +101,10 @@ function App() {
           placeholder="Ссылка на картинку"
         />
         <span className="place-url-input-error popup__error"></span>
-
-        <button className="popup__button-save popup__button-save_add_newplace" type="submit">
-          Создать
-        </button>
       </PopupWithForm>
 
       <PopupWithForm
+        buttonText="Сохранить"
         title="Обновить аватар"
         name="avatar-change"
         isOpen={isEditAvatarPopupOpen}
@@ -124,10 +119,6 @@ function App() {
           placeholder="Ссылка на аватар"
         />
         <span className="avatar-url-input-error popup__error"></span>
-
-        <button className="popup__button-save popup__button-save_popup_avatar" type="submit">
-          Сохранить
-        </button>
       </PopupWithForm>
 
       <ImagePopup card={selectedCard} onClose={closeAllPopups} />
