@@ -4,6 +4,7 @@ import Header from './Header.jsx';
 import Main from './Main.jsx';
 import Footer from './Footer.jsx';
 import PopupWithForm from './PopupWithForm.jsx';
+import EditProfilePopup from './EditProfilePopup.jsx';
 import ImagePopup from './ImagePopup.jsx';
 import { useEffect, useState } from 'react';
 import { CurrentUserContext } from '../contexts/CurrentUserContext.jsx';
@@ -49,6 +50,15 @@ function App() {
     setSelectedCard({ name: '', link: '' });
   };
 
+  //эта функция передается по ссылке onUpdateUser в EditProfilePopup
+  const handleUpdateUser = obj => {
+    api.editUserInfo(obj).then(res => {
+      //обновляем  глобальный контекст
+      setCurrentUser(res);
+      closeAllPopups();
+    });
+  };
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <Header />
@@ -58,37 +68,11 @@ function App() {
         onEditAvatar={handleEditAvatarClick}
         onCardClick={setSelectedCard}
       />
-
-      <PopupWithForm
-        buttonText="Сохранить"
-        title="Редактировать профиль"
-        name="add_edit"
+      <EditProfilePopup
         isOpen={isEditProfilePopupOpen}
         onClose={closeAllPopups}
-      >
-        <input
-          id="user-name-input"
-          className="popup__input popup__input_user-info_name"
-          name="name"
-          type="text"
-          required
-          placeholder="Имя"
-          minLength="2"
-          maxLength="40"
-        />
-        <span className="user-name-input-error popup__error"></span>
-        <input
-          id="user-job-input"
-          className="popup__input popup__input_user-info_job"
-          name="about"
-          type="text"
-          required
-          placeholder="Профессия"
-          minLength="2"
-          maxLength="200"
-        />
-        <span className="user-job-input-error popup__error"></span>
-      </PopupWithForm>
+        onUpdateUser={handleUpdateUser}
+      />
 
       <PopupWithForm
         buttonText="Создать"
