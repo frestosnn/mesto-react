@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PopupWithForm from './PopupWithForm';
 
 function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
@@ -20,6 +20,13 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
       link: link
     });
   };
+
+  //очистка полей ввода при открытии попапа(в качестве зависимости isOpen - то есть, инпуты сбразываются при изменения стейта попапа)
+  useEffect(() => {
+    setName('');
+    setLink('');
+  }, [isOpen]);
+
   return (
     <PopupWithForm
       buttonText="Создать"
