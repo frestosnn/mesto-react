@@ -1,10 +1,16 @@
-import { useEffect, useState } from 'react';
-import { api } from '../utils/Api.js';
 import Card from './Card.jsx';
 import React from 'react';
 import { CurrentUserContext } from '../contexts/CurrentUserContext.jsx';
 
-function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
+function Main({
+  onEditProfile,
+  onAddPlace,
+  onEditAvatar,
+  onCardClick,
+  onCardLike,
+  onCardDelete,
+  cards
+}) {
   const handleMouseEnter = () => {
     document.querySelector('.profile__avatar').style.opacity = '0.3';
     document.querySelector('.profile__add-avatar').style.opacity = '1';
@@ -16,26 +22,6 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
   };
 
   const currentUserInfo = React.useContext(CurrentUserContext);
-
-  const [cards, setCards] = useState([]);
-
-  useEffect(() => {
-    api
-      .getInitialCards()
-      .then(res => {
-        console.log(res);
-        setCards(state => (state = res));
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }, []);
-
-  const handleCardDelete = card => {
-    api.deleteCard(card._id).then(res => {
-      setCards(state => state.filter(card => card._id !== res._id));
-    });
-  };
 
   return (
     <main className="main">
@@ -65,7 +51,8 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
             key={card._id}
             card={card}
             onCardClick={onCardClick}
-            onCardDelete={handleCardDelete}
+            onCardDelete={onCardDelete}
+            onCardLike={onCardLike}
           />
         ))}
       </section>
